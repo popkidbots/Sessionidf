@@ -1,0 +1,24 @@
+name: session-id-popkid
+services:
+  - name: session-id-popkid
+    type: web
+    git:
+      branch: main
+    build:
+      builder: buildpack
+      build_command: npm install
+    run:
+      run_command: npm start
+    ports:
+      - port: 8000
+        protocol: http
+    env:
+      - key: PORT
+        value: "8000"
+      - key: NODE_ENV
+        value: production
+    health_checks:
+      - path: /health
+        port: 8000
+        initial_delay_seconds: 5
+        period_seconds: 10

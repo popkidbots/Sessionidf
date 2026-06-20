@@ -1,0 +1,26 @@
+{
+  "name": "nexus-md-session",
+  "description": "WhatsApp session ID generator — NEXUS MD",
+  "version": "2.0.0",
+  "main": "./index.js",
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=9.7.2"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "popkid",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@whiskeysockets/baileys": "npm:wileys",
+    "awesome-phonenumber": "^2.64.0",
+    "body-parser": "^1.20.1",
+    "express": "^4.18.1",
+    "jimp": "^0.16.13",
+    "megajs": "1.1.7",
+    "path": "^0.12.7",
+    "pino": "^8.1.0",
+    "qrcode": "^1.5.3"
+  }
+}

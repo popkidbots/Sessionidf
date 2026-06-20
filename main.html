@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<title>NEXUS MD SESSIONS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous"/>
+<style>
+:root {
+  --bg-dark: #030a0f;
+  --panel-bg: rgba(5, 18, 30, 0.75);
+  --card-bg: rgba(8, 22, 38, 0.6);
+  --primary: #00c6ff;
+  --primary-glow: rgba(0, 198, 255, 0.35);
+  --accent: #7c3aed;
+  --accent-glow: rgba(124, 58, 237, 0.3);
+  --green: #10b981;
+  --text-main: #f0f9ff;
+  --text-muted: #7ea8c4;
+  --border: rgba(0, 198, 255, 0.1);
+  --border-hover: rgba(0, 198, 255, 0.35);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  min-height:100vh;
+  background-color: var(--bg-dark);
+  background-image:
+    linear-gradient(rgba(0,198,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,198,255,0.025) 1px, transparent 1px);
+  background-size: 28px 28px;
+  font-family:'Inter',sans-serif;
+  color:var(--text-main);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:24px;
+}
+.main-content {
+  width:100%;
+  max-width:640px;
+  background:var(--panel-bg);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:40px;
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  box-shadow:0 30px 80px rgba(0,0,0,0.9), 0 0 60px rgba(0,198,255,0.04), inset 0 1px 0 rgba(255,255,255,0.04);
+  position:relative;
+  overflow:hidden;
+}
+.main-content::before {
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height:3px;
+  background:linear-gradient(90deg, var(--accent), var(--primary), var(--accent));
+  animation: shimmer 3s linear infinite;
+  background-size: 200% 100%;
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.logo {
+  display:flex;
+  justify-content:center;
+  margin-bottom:20px;
+}
+.logo-ring {
+  width:100px; height:100px;
+  border-radius:50%;
+  border:2px solid var(--border);
+  padding:4px;
+  background:radial-gradient(circle, rgba(0,198,255,0.06), transparent);
+  box-shadow: 0 0 30px var(--primary-glow);
+  position:relative;
+}
+.logo img {
+  width:100%; height:100%;
+  object-fit:cover;
+  border-radius:50%;
+  filter:drop-shadow(0 0 12px var(--primary-glow));
+  transition:transform 0.6s ease;
+}
+.main-content:hover .logo img { transform:rotate(360deg); }
+h1 {
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.9rem;
+  font-weight:800;
+  text-align:center;
+  letter-spacing:3px;
+  margin-bottom:6px;
+  text-transform:uppercase;
+  background:linear-gradient(135deg, #ffffff 20%, var(--primary) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.subtitle {
+  text-align:center;
+  font-size:0.78rem;
+  color:var(--text-muted);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:28px;
+}
+.status-bar {
+  display:grid;
+  grid-template-columns:1.2fr 1fr 1fr;
+  align-items:center;
+  text-align:center;
+  background:rgba(0,0,0,0.35);
+  border:1px solid var(--border);
+  padding:12px;
+  border-radius:12px;
+  font-size:0.82rem;
+  font-weight:500;
+  color:var(--text-muted);
+  margin-bottom:28px;
+}
+#time { display:flex; align-items:center; justify-content:center; gap:7px; color:var(--text-main); }
+.pulse-dot {
+  width:6px; height:6px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 8px var(--green);
+  animation:pulse 2s infinite;
+}
+#battery-status { color:var(--primary); font-family:monospace; }
+.section {
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:22px;
+  margin-bottom:16px;
+  transition:all 0.3s ease;
+}
+.section:hover {
+  border-color:var(--border-hover);
+  box-shadow:0 8px 28px rgba(0,198,255,0.06);
+  transform:translateY(-1px);
+}
+.section h3 {
+  font-family:'Space Grotesk',sans-serif;
+  font-size:0.8rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  color:var(--primary);
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.btn-grid { display:grid; grid-template-columns:1fr; gap:10px; }
+.dev-section .btn-grid { grid-template-columns:1fr 1fr; }
+.btn {
+  width:100%;
+  background:rgba(0,198,255,0.04);
+  border:1px solid var(--border);
+  color:var(--text-main);
+  padding:15px 20px;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:0.9rem;
+  font-weight:600;
+  border-radius:10px;
+  cursor:pointer;
+  transition:all 0.25s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  position:relative;
+  overflow:hidden;
+}
+.btn::before {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(135deg, var(--accent), var(--primary));
+  opacity:0;
+  transition:opacity 0.3s;
+}
+.btn span { position:relative; z-index:1; }
+.btn:hover { border-color:transparent; box-shadow:0 0 20px var(--primary-glow); transform:scale(1.01); }
+.btn:hover::before { opacity:1; }
+.btn:active { transform:scale(0.99); }
+.footer { margin-top:32px; text-align:center; }
+.footer-divider { width:40px; height:1px; background:rgba(255,255,255,0.08); margin:0 auto 16px; }
+.footer div { font-size:0.78rem; color:var(--text-muted); letter-spacing:0.5px; margin-bottom:3px; }
+.badge {
+  display:inline-block;
+  background:rgba(0,198,255,0.08);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:3px 12px;
+  font-size:0.72rem;
+  color:var(--primary);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+@keyframes pulse {
+  0%,100%{opacity:1;transform:scale(1);}
+  50%{opacity:0.4;transform:scale(0.9);}
+}
+@media(max-width:560px){
+  .main-content{padding:22px 16px;}
+  .status-bar{grid-template-columns:1fr;gap:6px;}
+  .dev-section .btn-grid{grid-template-columns:1fr;}
+  h1{font-size:1.5rem;}
+}
+</style>
+</head>
+<body>
+<div class="main-content">
+  <div class="logo">
+    <div class="logo-ring">
+      <img src="https://files.catbox.moe/j9ia5c.png" alt="NEXUS Logo">
+    </div>
+  </div>
+  <h1>NEXUS MD 2026</h1>
+  <p class="subtitle">WhatsApp Session Generator</p>
+  <div class="status-bar">
+    <div id="time"><span class="pulse-dot"></span><span id="time-val"></span></div>
+    <div id="date"></div>
+    <div id="battery-status"><i class="fas fa-battery-full"></i></div>
+  </div>
+  <div class="section">
+    <h3><i class="fa-solid fa-link" style="font-size:.8rem;"></i> Generate Session</h3>
+    <div class="btn-grid">
+      <button class="btn" onclick="window.location.href='/pair'">
+        <span><i class="fas fa-qrcode"></i> &nbsp;Pair Code</span>
+      </button>
+    </div>
+  </div>
+  <div class="section dev-section">
+    <h3><i class="fa-solid fa-code" style="font-size:.8rem;"></i> Developer & Community</h3>
+    <div class="btn-grid">
+      <button class="btn" onclick="window.open('https://github.com/popkidmain')">
+        <span><i class="fab fa-github"></i> &nbsp;GitHub</span>
+      </button>
+      <button class="btn" onclick="window.open('https://whatsapp.com/channel/0029Vb70ySJHbFV91PNKuL3T')">
+        <span><i class="fab fa-whatsapp"></i> &nbsp;Channel</span>
+      </button>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-divider"></div>
+    <div class="badge">NEXUS MD</div>
+    <div>Made with ❤️ by popkid</div>
+    <div style="margin-top:4px;color:#3a5a70;font-size:.7rem;">By popkidprojects</div>
+  </div>
+</div>
+<script>
+function updateTime(){
+  const t=new Date();
+  document.getElementById('time-val').textContent=t.toLocaleTimeString();
+  document.getElementById('date').textContent=t.toLocaleDateString();
+}
+function updateBattery(){
+  if(navigator.getBattery){
+    navigator.getBattery().then(b=>{
+      document.getElementById('battery-status').textContent=
+        Math.round(b.level*100)+'% '+(b.charging?'⚡':'🔋');
+    });
+  }
+}
+setInterval(updateTime,1000);
+updateTime();
+updateBattery();
+</script>
+</body>
+</html>

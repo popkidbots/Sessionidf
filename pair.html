@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>NEXUS MD | CONNECT</title>
+  <meta name="theme-color" content="#030a0f" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous"/>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    :root {
+      --bg: #030a0f;
+      --card-bg: rgba(5, 18, 30, 0.9);
+      --primary: #00c6ff;
+      --primary-glow: rgba(0,198,255,0.25);
+      --accent: #7c3aed;
+      --green: #25d366;
+      --border: rgba(0,198,255,0.12);
+      --border-active: rgba(0,198,255,0.5);
+      --text: #f0f9ff;
+      --muted: #7ea8c4;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body {
+      font-family:'Space Grotesk',sans-serif;
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      background-color:var(--bg);
+      background-image:
+        linear-gradient(rgba(0,198,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,198,255,0.025) 1px, transparent 1px);
+      background-size:26px 26px;
+      padding:80px 20px 40px;
+    }
+    .navbar {
+      position:fixed;
+      top:0;left:0;right:0;
+      height:58px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(3,10,15,0.9);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);
+      z-index:999;
+    }
+    .navbar .brand {
+      font-weight:700;
+      font-size:0.9rem;
+      letter-spacing:2.5px;
+      text-transform:uppercase;
+      color:var(--text);
+      text-decoration:none;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      transition:color 0.3s;
+    }
+    .navbar .brand i { color:var(--primary); filter:drop-shadow(0 0 6px var(--primary-glow)); }
+    .navbar .brand:hover { color:var(--primary); }
+
+    .pair-card {
+      position:relative;
+      max-width:430px;
+      width:100%;
+      padding:38px 30px;
+      border-radius:18px;
+      border:1px solid var(--border);
+      background:var(--card-bg);
+      backdrop-filter:blur(24px);
+      box-shadow:0 30px 70px rgba(0,0,0,0.9), 0 0 40px rgba(0,198,255,0.04);
+      text-align:center;
+    }
+    .top-line {
+      position:absolute;
+      top:-1px;left:30px;right:30px;
+      height:2px;
+      background:linear-gradient(90deg, transparent, var(--accent), var(--primary), transparent);
+      border-radius:2px;
+    }
+    .pair-card h1 {
+      font-size:1.25rem;
+      font-weight:700;
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      margin-bottom:6px;
+      background:linear-gradient(135deg,#fff 30%,var(--primary));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+    .pair-card > p {
+      color:var(--muted);
+      font-size:0.85rem;
+      line-height:1.5;
+      margin-bottom:22px;
+    }
+    .divider {
+      width:100%;height:1px;
+      background:linear-gradient(90deg,transparent,var(--border),transparent);
+      margin-bottom:22px;
+    }
+    label {
+      display:block;
+      font-weight:700;
+      font-size:0.75rem;
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      text-align:left;
+      margin-bottom:8px;
+      color:var(--primary);
+    }
+    input {
+      width:100%;
+      padding:13px 16px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,0.4);
+      color:var(--text);
+      font-family:'Share Tech Mono',monospace;
+      font-size:1.05rem;
+      margin-bottom:14px;
+      outline:none;
+      transition:all 0.25s;
+      text-align:center;
+    }
+    input::placeholder { color:rgba(255,255,255,0.15); font-family:'Space Grotesk',sans-serif; font-size:0.88rem; }
+    input:focus { border-color:var(--primary); background:rgba(0,198,255,0.05); box-shadow:0 0 20px rgba(0,198,255,0.08); }
+
+    .pair-btn {
+      width:100%;
+      padding:14px;
+      border:none;
+      border-radius:10px;
+      font-family:'Space Grotesk',sans-serif;
+      font-weight:700;
+      font-size:0.9rem;
+      letter-spacing:1.5px;
+      color:#fff;
+      background:linear-gradient(135deg, var(--accent), var(--primary));
+      cursor:pointer;
+      margin-bottom:12px;
+      transition:all 0.25s;
+      box-shadow:0 4px 20px rgba(0,198,255,0.2);
+    }
+    .pair-btn:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,198,255,0.35); }
+    .pair-btn:active { transform:translateY(0) scale(0.99); }
+    .pair-btn:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+
+    .channel-btn {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      background:rgba(37,211,102,0.04);
+      color:var(--muted);
+      border:1px solid rgba(37,211,102,0.15);
+      border-radius:10px;
+      padding:11px;
+      width:100%;
+      text-decoration:none;
+      font-size:0.82rem;
+      font-weight:700;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      margin-bottom:22px;
+      transition:all 0.25s;
+    }
+    .channel-btn:hover { background:rgba(37,211,102,0.1); border-color:var(--green); color:var(--text); }
+
+    .code-box {
+      display:block;
+      padding:18px;
+      border-radius:10px;
+      border:1px dashed var(--primary);
+      background:rgba(0,198,255,0.04);
+      cursor:pointer;
+      transition:all 0.2s;
+      font-family:'Share Tech Mono',monospace;
+      font-size:1.6rem;
+      font-weight:700;
+      color:var(--primary);
+      letter-spacing:5px;
+      text-shadow:0 0 20px var(--primary-glow);
+    }
+    .code-box:hover { background:rgba(0,198,255,0.09); box-shadow:0 0 28px rgba(0,198,255,0.18); }
+    .code-label { display:block; font-size:0.73rem; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+    .msg-error { color:#ef4444; font-size:0.88rem; font-weight:500; }
+    .msg-warn  { color:#f59e0b; font-size:0.88rem; font-weight:500; }
+    .msg-wait  { color:var(--muted); font-size:0.88rem; }
+    #pair { min-height:24px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/" class="brand">
+      <i class="fas fa-bolt"></i> NEXUS TERMINAL MD
+    </a>
+  </nav>
+
+  <div class="pair-card">
+    <div class="top-line"></div>
+    <h1>NEXUS SESSION</h1>
+    <p>Enter your WhatsApp number with country code (no + sign) to generate your session ID.</p>
+    <div class="divider"></div>
+    <label for="number">Phone Number</label>
+    <input type="text" id="number" placeholder="e.g. 2547XXXXXXXX" maxlength="15" />
+    <button id="submit" class="pair-btn">⚡ REQUEST PAIR CODE</button>
+    <a href="https://whatsapp.com/channel/0029Vb70ySJHbFV91PNKuL3T" target="_blank" class="channel-btn">
+      <i class="fab fa-whatsapp" style="color:var(--green);font-size:1rem;"></i> Join Community Channel
+    </a>
+    <div id="pair"></div>
+  </div>
+
+  <script>
+    const pairDiv = document.getElementById("pair");
+    const submitBtn = document.getElementById("submit");
+    const numInput = document.getElementById("number");
+
+    async function copyCode() {
+      const el = document.getElementById("copy");
+      const code = el.dataset.code;
+      try {
+        await navigator.clipboard.writeText(code);
+        el.querySelector('.code-val').textContent = "✓ COPIED";
+        el.style.color = "#10b981";
+        setTimeout(() => {
+          el.querySelector('.code-val').textContent = code;
+          el.style.color = "var(--primary)";
+        }, 900);
+      } catch(e) {}
+    }
+
+    submitBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      const raw = numInput.value.trim();
+      if (!raw) {
+        pairDiv.innerHTML = '<p class="msg-warn"><i class="fas fa-exclamation-circle"></i> Please enter your phone number.</p>';
+        return;
+      }
+      const num = raw.replace(/[^0-9]/g, "");
+      if (num.length < 10) {
+        pairDiv.innerHTML = '<p class="msg-warn"><i class="fas fa-exclamation-circle"></i> Number too short. Include your country code.</p>';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      pairDiv.innerHTML = '<p class="msg-wait"><i class="fas fa-circle-notch fa-spin"></i> Requesting pair code — this takes a few seconds...</p>';
+
+      try {
+        const { data } = await axios.get(`/code?number=${num}`, { timeout: 60000 });
+        const code = data.code || "Service Unavailable";
+
+        if (code.includes("❗") || code.toLowerCase().includes("unavailable")) {
+          pairDiv.innerHTML = `<p class="msg-error"><i class="fas fa-triangle-exclamation"></i> ${code}</p>`;
+        } else {
+          pairDiv.innerHTML =
+            '<span class="code-label">Tap code to copy — enter in WhatsApp within 60 seconds</span>' +
+            '<div id="copy" class="code-box" onclick="copyCode()" data-code="' + code + '">' +
+              '<span class="code-val">' + code + '</span>' +
+            '</div>';
+        }
+      } catch (err) {
+        pairDiv.innerHTML = '<p class="msg-error"><i class="fas fa-triangle-exclamation"></i> Connection failed. Please retry.</p>';
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Allow Enter key to submit
+    numInput.addEventListener("keydown", e => { if(e.key === "Enter") submitBtn.click(); });
+  </script>
+</body>
+</html>
