@@ -2,8 +2,8 @@ const mega = require("megajs");
 
 // Use environment variables — NEVER hardcode credentials
 const auth = {
-  email: process.env.MEGA_EMAIL || "hostdeployment@gmail.com",
-  password: process.env.MEGA_PASSWORD || "taracha2004?",
+  email: process.env.MEGA_EMAIL || "mangwaike@gmail.com",
+  password: process.env.MEGA_PASSWORD || "Taracha2004?",
   userAgent:
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
 };
